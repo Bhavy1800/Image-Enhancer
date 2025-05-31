@@ -1,35 +1,35 @@
-import React from "react";
-import UploadImage from "./UploadImage";
+import ImageUpload from "./UploadImage";
 import ImagePreview from "./ImagePreview";
 import { useState } from "react";
-import {enhancedImageAPI} from "../utils/enhancedImageApi"
+import { enhancedImageAPI } from "../utils/enhancedImageApi";
+
 const Home = () => {
   const [uploadImage, setUploadImage] = useState(null);
   const [enhancedImage, setEnhancedImage] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setloading] = useState(false);
 
   const UploadImageHandler = async (file) => {
     setUploadImage(URL.createObjectURL(file));
-    setLoading(true);
-    //call the API to enhance the image
+    setloading(true);
     try {
-      // Code which may produce error
       const enhancedURL = await enhancedImageAPI(file);
       setEnhancedImage(enhancedURL);
-      setLoading(false);
+      setloading(false);
     } catch (error) {
-      // Code to handel error
       console.log(error);
+      alert("Error while enhancing the image. Please try again later.");
     }
-  };  return (
-    <div className="">
-      <UploadImage UploadImageHandler={UploadImageHandler} />
+  };
+
+  return (
+    <>
+      <ImageUpload UploadImageHandler={UploadImageHandler} />
       <ImagePreview
         loading={loading}
-        enhanced={enhancedImage}
         uploaded={uploadImage}
+        enhanced={enhancedImage?.image}
       />
-    </div>
+    </>
   );
 };
 
